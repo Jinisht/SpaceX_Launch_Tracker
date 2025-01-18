@@ -14,6 +14,7 @@ class Spacex_features:
         self.launchpads_id_and_name = {lp['id']: lp['name'] for lp in self.launchpads}
 
     def display_launch_key_details(self):
+        """ Display a list of launches and its key details."""
         launch_key_details= []
         for launch in self.launches:
             launch_name = launch["name"]
@@ -29,13 +30,10 @@ class Spacex_features:
             print(f'Launch name :{data["name"]} | Rocket name: {data["rocket"]} '
                   f'| Launch site: {data["launch site"]} | Success: {data["success"]}')
 
-    def launch_tracking(self,date_range: Optional[Tuple[Optional[datetime], Optional[datetime]]] = (None, None),
-                        rocket_name: Optional[str] = None,
-                        success: Optional[bool] = None,
+    def launch_tracking(self, date_range: Optional[Tuple[Optional[datetime], Optional[datetime]]] = (None, None),
+                        rocket_name: Optional[str] = None, success: Optional[bool] = None,
                         launch_site: Optional[str] = None ) -> None:
-
-    #def launch_tracking(self, date_range=None, rocket_name=None, success=None, launch_site=None):
-        """Display a list of launches with optional filtering."""
+        """ Display a list of launches with given filtering."""
         filtered_launches: List[Dict] = []
         for launch in self.launches:
             # Filter by date range
@@ -61,15 +59,18 @@ class Spacex_features:
 
             filtered_launches.append({"name": launch['name'], "date": launch_date, "rocket": rocket_name_in_rockets,
                                       "success": success_value, "launchpad": launch_pad_name })
-        for datas in filtered_launches:
-            if datas["success"] == True:
+
+        for data in filtered_launches:
+            if data["success"]:
                 success_status = "Success"
             else:
                 success_status = "Failure"
-            print(f"Date={datas['date']} | Rocket= {datas['rocket']} | Status = {success_status}  "
-                  f"| Launch site = {datas['launchpad']}")
+            print(f"Date={data['date']} | Rocket= {data['rocket']} | Status = {success_status}  "
+                  f"| Launch site = {data['launchpad']}")
 
     def statistics_generation(self) -> None:
+        """ Display the statistics such as success rates, total number of launches per site and
+            launch frequency"""
         success_rate_by_rocket: Dict = {}
         for rocket in self.rockets:
             rocket_name = rocket["name"]
@@ -94,14 +95,4 @@ class Spacex_features:
         df['month'] = df['date_utc'].dt.month
         launches_per_year = df['year'].value_counts().sort_index().reset_index()
         launches_per_month = df.groupby(['year', 'month']).size().reset_index(name='count')
-        print("Launches per year:")
-        print(launches_per_year)
-
-        print("\nLaunches per month:")
-        print(launches_per_month)
-
-
-
-
-
-
+        print(f"\nLaunches per year:\n{launches_per_year}\n\nLaunches per month:\n{launches_per_month}")

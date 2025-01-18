@@ -10,14 +10,16 @@ BASE_URL = "https://api.spacexdata.com/v4"
 CACHE_FILE = "spacex_cache.json"
 CACHE_DURATION = 3600  # in seconds
 
-class SpaceXAPIClient:
+
+class SpaceXAPIclient:
 
     def __init__(self, base_url=BASE_URL, cache_file=CACHE_FILE, cache_duration=CACHE_DURATION):
         self.base_url = base_url
         self.cache_file = cache_file
         self.cache_duration = cache_duration
 
-    def _is_cache_valid(self, endpoint: str) -> bool: # Check if the cache file exists and contains valid data for the given endpoint.
+    def _is_cache_valid(self, endpoint: str) -> bool:
+        """ Check if the cache file exists and contains valid data for the given endpoint."""
         if os.path.exists(self.cache_file):
             try:
                 with open(self.cache_file, "r") as file:
@@ -28,12 +30,14 @@ class SpaceXAPIClient:
                 return False
         return False
 
-    def _read_cache(self, endpoint: str) -> list: #Read cached data for the given endpoint.
+    def _read_cache(self, endpoint: str) -> list:
+        """ Read cached data from the given endpoint. """
         with open(self.cache_file, "r") as file:
             cache = json.load(file)
         return cache[endpoint]["data"]
 
-    def _write_cache(self, endpoint: str, data: list) -> None:  #Write data to the cache file for the given endpoint.
+    def _write_cache(self, endpoint: str, data: list) -> None:
+        """ Write data to the cache file from the given endpoint. """
         if os.path.exists(self.cache_file):
             try:
                 with open(self.cache_file, "r") as file:
@@ -47,11 +51,11 @@ class SpaceXAPIClient:
         with open(self.cache_file, "w") as file:
             json.dump(cache, file, indent=4)
 
-    def fetch_data(self, endpoint: str) -> Any: #Fetch data from the SpaceX API or cache.
+    def fetch_data(self, endpoint: str) -> Any:
+        """ Fetch data from the SpaceX API or cache file."""
         if self._is_cache_valid(endpoint):
             print(f"Serving data from cache for {endpoint}.")
             return self._read_cache(endpoint)
-
         try:
             url = f"{self.base_url}{endpoint}"
             print(f"Fetching data from API: {url}")
@@ -68,18 +72,21 @@ class SpaceXAPIClient:
             else:
                 raise RuntimeError(f"Failed to fetch data from API and no cache available for {endpoint}.")
 
-    def fetch_launches(self) -> dict:   #Fetch SpaceX launches.
+    def fetch_launches(self) -> dict:
+        """ Fetch data from endpoint launches."""
         return self.fetch_data("/launches")
 
-    def fetch_rockets(self) -> dict:    #Fetch SpaceX rockets.
+    def fetch_rockets(self) -> dict:
+        """Fetch data from endpoint rockets."""
         return self.fetch_data("/rockets")
 
-    def fetch_launchpads(self) -> dict:   #Fetch SpaceX launchpads.
+    def fetch_launchpads(self) -> dict:
+        """Fetch data from endpoint launchpads."""
         return self.fetch_data("/launchpads")
 
 
 if __name__ == "__main__":
-    client = SpaceXAPIClient()
+    client = SpaceXAPIclient()
     features = Spacex_features(client)
     features.display_launch_key_details()
     print("\nFiltered Launches:")

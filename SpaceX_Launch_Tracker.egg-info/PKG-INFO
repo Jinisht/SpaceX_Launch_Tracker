@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: SpaceX_Launch_Tracker
+Version: 1.0.0
+Summary: SpaceX_Launch_Tracker software
+Requires-Dist: requests
+Requires-Dist: pandas
