@@ -6,7 +6,7 @@ This repository contains a Python application that tracks and analyzes SpaceX la
 ## Operating System
 Windows 10
 
-##Python 
+## Python 
 Python 3.10.16
 
 ## PIP Packages             
@@ -16,11 +16,4 @@ Python 3.10.16
 ## Installation
 * clone the GitHub repo
 * Install setup.py
-    * pip install -e <path of setup.py file>
-
-
-
-
-
-
-
+      * pip install -e <path of  setup.py file
