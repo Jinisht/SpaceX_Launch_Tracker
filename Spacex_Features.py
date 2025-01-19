@@ -32,20 +32,24 @@ class Spacex_features:
 
     def launch_tracking(self, date_range: Optional[Tuple[Optional[datetime], Optional[datetime]]] = (None, None),
                         rocket_name: Optional[str] = None, success: Optional[bool] = None,
-                        launch_site: Optional[str] = None ) -> None:
-        """ Display a list of launches with given filtering."""
+                        launch_site: Optional[str] = None ) -> list[dict]:
+        """ Display a list of launches with given filtering.
+        :rtype: object
+        """
         filtered_launches: List[Dict] = []
+        start, end = date_range if date_range else (None, None)
         for launch in self.launches:
-            # Filter by date range
-            launch_date = datetime.fromisoformat(launch['date_utc'].replace("Z", ""))
-            if date_range:
-                start, end = date_range
-                if not (start <= launch_date <= end):
-                    continue
+            if launch["date_utc"]:
+                launch_date = datetime.fromisoformat(launch['date_utc'].replace("Z", ""))
+            else:
+                launch_date = None
+            if start and end and launch_date and not (start <= launch_date <= end):
+                continue
+
 
             rocket_id = launch['rocket']  # Filter by rocket name
             rocket_name_in_rockets = self.rocket_id_and_name[rocket_id]
-            if rocket_name_in_rockets != rocket_name:
+            if rocket_name and  rocket_name_in_rockets != rocket_name:
                 continue
 
             success_value =launch['success'] # Filter by success/failure
@@ -54,7 +58,7 @@ class Spacex_features:
 
             launch_pad_id = launch['launchpad']  # Filter by launch site
             launch_pad_name = self.launchpads_id_and_name[launch_pad_id]
-            if launch_pad_name != launch_site:
+            if launch_site and launch_pad_name != launch_site:
                 continue
 
             filtered_launches.append({"name": launch['name'], "date": launch_date, "rocket": rocket_name_in_rockets,
@@ -67,6 +71,7 @@ class Spacex_features:
                 success_status = "Failure"
             print(f"Date={data['date']} | Rocket= {data['rocket']} | Status = {success_status}  "
                   f"| Launch site = {data['launchpad']}")
+        return filtered_launches
 
     def statistics_generation(self) -> None:
         """ Display the statistics such as success rates, total number of launches per site and

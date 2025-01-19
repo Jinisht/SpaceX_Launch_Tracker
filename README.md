@@ -1,6 +1,6 @@
 # SpaceX-Launch-Tracker
 
-##About
+## About
 This repository contains a Python application that tracks and analyzes SpaceX launches using their public API. The application should help users understand launch history, track statistics, and monitor mission details.
  
 ## Operating System
@@ -14,6 +14,9 @@ Python 3.10.16
 * pandas 2.2.3
 
 ## Installation
-* clone the GitHub repo
+* Clone the GitHub repo
 * Install setup.py
       * pip install -e <path of  setup.py file
+* OR
+* Clone the GitHub repo
+* Create virtual environment and install packages.
