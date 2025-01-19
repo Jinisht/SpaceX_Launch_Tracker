@@ -12,11 +12,16 @@ Python 3.10.16
 ## PIP Packages             
 * requests 2.32.3
 * pandas 2.2.3
+* openpyxl 3.1.5
 
 ## Installation
+* Create virtual environment.
 * Clone the GitHub repo
 * Install setup.py
       * pip install -e <path of  setup.py file
-* OR
-* Clone the GitHub repo
-* Create virtual environment and install packages.
+ 
+
+## Details about the Software
+* The main script is main.py
+* Fetched data from API is stored in JSON file as "spacex_cache.json".
+* The output result data are exported to Excel file in different sheets as "SpaceX_Launch_Data.xlsx".
