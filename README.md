@@ -3,7 +3,7 @@
 ## About
 This repository contains a Python application that tracks and analyzes SpaceX launches using their public API. The application should help users understand launch history, track statistics, and monitor mission details.
  
-## Operating System
+## Operating system
 Windows 10
 
 ## Python 
@@ -21,7 +21,8 @@ Python 3.10.16
       * pip install -e <path of  setup.py file
  
 
-## Details about the Software
+## Details about the software
+* This application shows SpaceX launch key details, launch tracking with specified inputs, statistics generation.
 * The main script is main.py
 * Fetched data from API is stored in JSON file as "spacex_cache.json".
 * The output result data are exported to Excel file in different sheets as "SpaceX_Launch_Data.xlsx".

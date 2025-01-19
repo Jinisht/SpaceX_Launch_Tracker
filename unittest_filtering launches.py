@@ -3,7 +3,8 @@ from datetime import datetime
 from main import SpaceXAPI_client
 from module_features import Spacex_features
 
-class TestLaunchTracking(unittest.TestCase):
+
+class Test_launch_tracking(unittest.TestCase):
     def setUp(self):
         self.client = SpaceXAPI_client()
         self.features = Spacex_features(self.client)
@@ -19,26 +20,17 @@ class TestLaunchTracking(unittest.TestCase):
     def test_filter_by_rocket_name(self):
         """ Test filtering by rocket name """
         result = self.features.launch_tracking(rocket_name="Falcon 1")
-        self.assertTrue(len(result)> 1)
+        self.assertTrue(len(result) > 1)
         self.assertEqual(result[0]['name'], "FalconSat")
 
     def test_filter_by_success(self):
         """ Test filtering by success status """
         result = self.features.launch_tracking(success=False)
-        self.assertTrue(len(result)> 1)
+        self.assertTrue(len(result) > 1)
         self.assertEqual(result[0]['name'], "FalconSat")
 
     def test_filter_by_launch_site(self):
         """ Test filtering by launch site """
         result = self.features.launch_tracking("Kwajalein Atoll")
-        self.assertTrue(len(result)> 1)
+        self.assertTrue(len(result) > 1)
         self.assertEqual(result[0]['name'], "Falcon 1")
-
-
-
-
-
-
-
-if __name__ == "__main__":
-    unittest.main()
