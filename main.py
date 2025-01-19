@@ -12,7 +12,6 @@ CACHE_DURATION = 3600  # in seconds
 
 
 class SpaceXAPI_client:
-
     def __init__(self, base_url=BASE_URL, cache_file=CACHE_FILE, cache_duration=CACHE_DURATION):
         self.base_url = base_url
         self.cache_file = cache_file
@@ -88,13 +87,11 @@ if __name__ == "__main__":
     client = SpaceXAPI_client()
     features = Spacex_features(client)
     features.display_launch_key_details()
-    print("\nFiltered Launches:")
     date_range = (datetime(2000, 1, 1), datetime(2022, 12, 31))
     rocket_name = 'Falcon 9'
     success = True
     launch_site = "KSC LC 39A"
 
     features.launch_tracking(date_range, rocket_name, success, launch_site)
-    print("\nStatistics:")
     features.statistics_generation()
     features.export_data()

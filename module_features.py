@@ -23,7 +23,6 @@ class Spacex_features:
 
     def display_launch_key_details(self):
         """ Display a list of launches and its key details."""
-
         for launch in self.launches:
             launch_name: str = launch["name"]
             rocket_id: str = launch["rocket"]
@@ -33,7 +32,7 @@ class Spacex_features:
             launchpad_name: str = self.launchpads_id_and_name[launchpad_id]
             self.launch_key_details.append({"name": launch_name, "rocket": rocket_name, "launch site": launchpad_name,
                                             "success": success})
-        print("Launch key Details")
+        print("\nLaunch key Details")
         for data in self.launch_key_details:
             print(f'Launch name :{data["name"]} | Rocket name: {data["rocket"]} '
                   f'| Launch site: {data["launch site"]} | Success: {data["success"]}')
@@ -69,7 +68,7 @@ class Spacex_features:
             self.filtered_launches.append(
                 {"name": launch['name'], "date": launch_date, "rocket": rocket_name_in_rockets,
                  "success": success_value, "launchpad": launch_pad_name})
-
+        print("\nFiltered Launches:")
         for data in self.filtered_launches:
             if data["success"]:
                 success_status = "Success"
@@ -104,7 +103,8 @@ class Spacex_features:
         df['month'] = df['date_utc'].dt.month
         self.launches_per_year = df['year'].value_counts().sort_index().reset_index()
         self.launches_per_month = df.groupby(['year', 'month']).size().reset_index(name='count')
-        print(f"\nLaunches per year:\n{self.launches_per_year}\n\nLaunches per month:\n{self.launches_per_month}")
+        print(f"\nStatistics: \nLaunches per year:\n{self.launches_per_year}\n\nLaunches per month:"
+              f"\n{self.launches_per_month}")
 
     def export_data(self):
         output_file = 'SpaceX_Launch_Data.xlsx'
@@ -114,7 +114,6 @@ class Spacex_features:
                                            columns = ["Rocket", "Success Rate (%)"])
         total_launches = pd.DataFrame(list(self.total_number_of_launches.items()),
                                       columns = ["Launch site","Total number of launches"])
-
         with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
             launch_key_data.to_excel(writer, sheet_name='Launches_key_details', index=False)
             launch_tracking_data.to_excel(writer, sheet_name='Launches_tracking', index=False)
