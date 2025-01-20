@@ -1,6 +1,6 @@
 from datetime import datetime
 import pandas as pd
-from typing import Optional, Tuple, List, Dict
+from typing import Optional, Tuple
 from pandas import DataFrame
 
 

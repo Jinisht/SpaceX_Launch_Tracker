@@ -17,8 +17,8 @@ Python 3.10.16
 ## Installation
 * Create virtual environment.
 * Clone the GitHub repo
-* Install setup.py
-      * pip install -e <path of  setup.py file
+* Install setup.py- 
+      pip install -e <path of  setup.py file
  
 
 ## Details about the application

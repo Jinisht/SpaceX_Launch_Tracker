@@ -65,7 +65,6 @@ class SpaceXAPI_client:
         except requests.exceptions.RequestException as e:
             print(f"Error fetching data from {endpoint}: {e}")
 
-
     def fetch_launches(self) -> dict:
         """ Fetch data from endpoint launches."""
         return self.fetch_data("/launches")
