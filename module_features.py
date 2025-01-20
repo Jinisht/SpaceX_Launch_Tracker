@@ -107,7 +107,8 @@ class Spacex_features:
               f"\n{self.launches_per_month}")
 
     def export_data(self):
-        output_file = 'SpaceX_Launch_Data.xlsx'
+        """Export all the output data to the Excel file in different sheets"""
+        output_file = 'SpaceX_launch_data.xlsx'
         launch_key_data = pd.DataFrame(self.launch_key_details)
         launch_tracking_data = pd.DataFrame(self.filtered_launches)
         launch_success_rate = pd.DataFrame(list(self.success_rate_by_rocket.items()),
@@ -123,3 +124,5 @@ class Spacex_features:
             self.launches_per_month.to_excel(writer, sheet_name='Launches_per_month', index=False)
 
         print(f"Data exported to {output_file}.")
+
+

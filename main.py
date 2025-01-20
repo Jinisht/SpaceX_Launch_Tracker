@@ -7,7 +7,7 @@ from module_features import Spacex_features
 from typing import Any
 
 BASE_URL = "https://api.spacexdata.com/v4"
-CACHE_FILE = "spacex_cache.json"
+CACHE_FILE = "Spacex_cache.json"
 CACHE_DURATION = 3600  # in seconds
 
 
