@@ -52,7 +52,7 @@ class SpaceXAPI_client:
     def fetch_data(self, endpoint: str) -> Any:
         """ Fetch data from the SpaceX API or cache file."""
         if self._is_cache_valid(endpoint):
-            print(f"Serving data from cache for {endpoint}.")
+            print(f"Providing data from cache for {endpoint}.")
             return self._read_cache(endpoint)
         try:
             url = f"{self.base_url}{endpoint}"
@@ -64,11 +64,7 @@ class SpaceXAPI_client:
             return data
         except requests.exceptions.RequestException as e:
             print(f"Error fetching data from {endpoint}: {e}")
-            if self._is_cache_valid(endpoint):
-                print("Serving stale data from cache.")
-                return self._read_cache(endpoint)
-            else:
-                raise RuntimeError(f"Failed to fetch data from API and no cache available for {endpoint}.")
+
 
     def fetch_launches(self) -> dict:
         """ Fetch data from endpoint launches."""
@@ -87,10 +83,10 @@ if __name__ == "__main__":
     client = SpaceXAPI_client()
     features = Spacex_features(client)
     features.display_launch_key_details()
-    date_range = (datetime(2000, 1, 1), datetime(2022, 12, 31))
-    rocket_name = 'Falcon 9'
-    success = True
-    launch_site = "KSC LC 39A"
+    date_range: tuple[datetime, datetime] = (datetime(2000, 1, 1), datetime(2022, 12, 31))
+    rocket_name: str = 'Falcon 9'
+    success: bool = True
+    launch_site: str = "KSC LC 39A"
 
     features.launch_tracking(date_range, rocket_name, success, launch_site)
     features.statistics_generation()

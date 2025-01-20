@@ -10,16 +10,16 @@ class Spacex_features:
 
     def __init__(self, client):
         self.client = client
-        self.launches: List[Dict] = self.client.fetch_launches()
-        self.rockets: List[Dict] = self.client.fetch_rockets()
-        self.launchpads: List[Dict] = self.client.fetch_launchpads()
-        self.rocket_id_and_name: Dict[str, str] = {r['id']: r['name'] for r in self.rockets}
-        self.launchpads_id_and_name: Dict[str, str] = {lp['id']: lp['name'] for lp in self.launchpads}
-        self.filtered_launches: List[Dict] = []
-        self.launch_key_details: List[Dict] = []
-        self.success_rate_by_rocket: Dict = {}
-        self.total_number_of_launches: Dict = {}
-        self.launch_date: List = []
+        self.launches: list[dict] = self.client.fetch_launches()
+        self.rockets: list[dict] = self.client.fetch_rockets()
+        self.launchpads: list[dict] = self.client.fetch_launchpads()
+        self.rocket_id_and_name: dict[str, str] = {r['id']: r['name'] for r in self.rockets}
+        self.launchpads_id_and_name: dict[str, str] = {lp['id']: lp['name'] for lp in self.launchpads}
+        self.filtered_launches: list[dict] = []
+        self.launch_key_details: list[dict] = []
+        self.success_rate_by_rocket: dict = {}
+        self.total_number_of_launches: dict = {}
+        self.launch_date: list = []
 
     def display_launch_key_details(self):
         """ Display a list of launches and its key details."""
@@ -28,7 +28,7 @@ class Spacex_features:
             rocket_id: str = launch["rocket"]
             launchpad_id: str = launch["launchpad"]
             success: bool = launch['success']
-            rocket_name:str = self.rocket_id_and_name[rocket_id]
+            rocket_name: str = self.rocket_id_and_name[rocket_id]
             launchpad_name: str = self.launchpads_id_and_name[launchpad_id]
             self.launch_key_details.append({"name": launch_name, "rocket": rocket_name, "launch site": launchpad_name,
                                             "success": success})
@@ -47,7 +47,7 @@ class Spacex_features:
             if launch["date_utc"]:
                 launch_date = datetime.fromisoformat(launch['date_utc'].replace("Z", ""))
             else:
-                launch_date = None
+                launch_date: datetime = None
             if start and end and launch_date and not (start <= launch_date <= end):
                 continue
 
@@ -68,7 +68,7 @@ class Spacex_features:
             self.filtered_launches.append(
                 {"name": launch['name'], "date": launch_date, "rocket": rocket_name_in_rockets,
                  "success": success_value, "launchpad": launch_pad_name})
-        print("\nFiltered Launches:")
+        print("\n\nFiltered Launches:")
         for data in self.filtered_launches:
             if data["success"]:
                 success_status = "Success"
@@ -81,40 +81,40 @@ class Spacex_features:
     def statistics_generation(self) -> None:
         """ Display the statistics such as success rates, total number of launches per site and
             launch frequency"""
+        print("\n Statistics")
         for rocket in self.rockets:
             rocket_name: str = rocket["name"]
             success_rate: float = rocket["success_rate_pct"]
-            self.success_rate_by_rocket[rocket_name]: Dict[str, float] = success_rate
+            self.success_rate_by_rocket[rocket_name]: dict[str, float] = success_rate
             print(f" Rocket = {rocket_name} | Success rate = {success_rate}")
 
         for launchpad in self.launchpads:
             launch_site_name: str = launchpad["name"]
             total_launches: float = launchpad["launch_attempts"]
-            self.total_number_of_launches[launch_site_name]: Dict[str, float] = total_launches
+            self.total_number_of_launches[launch_site_name]: dict[str, float] = total_launches
             print(f" Launch site = {launch_site_name} | Total number of launches = {total_launches}")
 
-        self.launch_date: List = []
         for launch in self.launches:
-            date = datetime.fromisoformat(launch['date_utc'].replace("Z", ""))
+            date: datetime = datetime.fromisoformat(launch['date_utc'].replace("Z", ""))
             self.launch_date.append({'date_utc': date})
 
         df = pd.DataFrame(self.launch_date)
         df['year'] = df['date_utc'].dt.year
         df['month'] = df['date_utc'].dt.month
-        self.launches_per_year = df['year'].value_counts().sort_index().reset_index()
-        self.launches_per_month = df.groupby(['year', 'month']).size().reset_index(name='count')
+        self.launches_per_year: DataFrame = df['year'].value_counts().sort_index().reset_index()
+        self.launches_per_month: DataFrame = df.groupby(['year', 'month']).size().reset_index(name='count')
         print(f"\nStatistics: \nLaunches per year:\n{self.launches_per_year}\n\nLaunches per month:"
               f"\n{self.launches_per_month}")
 
     def export_data(self):
         """Export all the output data to the Excel file in different sheets"""
         output_file = 'SpaceX_launch_data.xlsx'
-        launch_key_data = pd.DataFrame(self.launch_key_details)
-        launch_tracking_data = pd.DataFrame(self.filtered_launches)
-        launch_success_rate = pd.DataFrame(list(self.success_rate_by_rocket.items()),
-                                           columns = ["Rocket", "Success Rate (%)"])
-        total_launches = pd.DataFrame(list(self.total_number_of_launches.items()),
-                                      columns = ["Launch site","Total number of launches"])
+        launch_key_data: DataFrame = pd.DataFrame(self.launch_key_details)
+        launch_tracking_data: DataFrame = pd.DataFrame(self.filtered_launches)
+        launch_success_rate: DataFrame = pd.DataFrame(list(self.success_rate_by_rocket.items()),
+                                                      columns=["Rocket", "Success Rate (%)"])
+        total_launches: DataFrame = pd.DataFrame(list(self.total_number_of_launches.items()),
+                                                 columns=["Launch site", "Total number of launches"])
         with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
             launch_key_data.to_excel(writer, sheet_name='Launches_key_details', index=False)
             launch_tracking_data.to_excel(writer, sheet_name='Launches_tracking', index=False)
@@ -124,5 +124,3 @@ class Spacex_features:
             self.launches_per_month.to_excel(writer, sheet_name='Launches_per_month', index=False)
 
         print(f"Data exported to {output_file}.")
-
-
