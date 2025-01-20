@@ -23,6 +23,7 @@ Python 3.10.16
 
 ## Details about the application
 * This application shows SpaceX launch key details, launch tracking with specified inputs, statistics generation.
+* The files in the application are main.py and module_features.py
 * The main script is main.py
 * The input details such as date range, rocket name, success = True/false, and launch site should be given in the main.py
 * Fetched data from API is stored in JSON file as "spaceX_cache.json".
